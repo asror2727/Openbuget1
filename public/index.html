@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>OpenBudget Bot</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: sans-serif; }
+    body { background-color: #17212b; color: #ffffff; padding: 16px; display: flex; flex-direction: column; gap: 12px; }
+    .header-card { background: rgba(255, 255, 255, 0.05); border-radius: 14px; padding: 16px; text-align: center; border: 1px solid rgba(255,255,255,0.1); }
+    .btn-grid { display: flex; flex-direction: column; gap: 10px; margin-top: 10px; }
+    .btn-row { display: flex; gap: 10px; }
+
+    /* TUGMALAR STILI */
+    .btn { width: 100%; padding: 14px; border: none; border-radius: 12px; font-size: 15px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s; }
+    .btn:active { transform: scale(0.98); opacity: 0.9; }
+
+    /* 🟢 Yashil Tugma */
+    .btn-green { background: linear-gradient(135deg, #11998e, #38ef7d); color: #ffffff; font-size: 16px; }
+
+    /* 🟦 Ko'k Tugmalar */
+    .btn-blue { background: #0088cc; color: #ffffff; flex: 1; }
+
+    /* 🟥 Qizil Tugmalar */
+    .btn-red { background: linear-gradient(135deg, #eb3349, #f45c43); color: #ffffff; flex: 1; }
+
+    /* ⚪️ Oq Tugma */
+    .btn-white { background: #ffffff; color: #111111; font-weight: 700; }
+
+    /* Modal oyna */
+    .modal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.7); align-items: center; justify-content: center; padding: 20px; }
+    .modal-content { background: #242f3d; padding: 20px; border-radius: 16px; width: 100%; max-width: 320px; text-align: center; }
+    .close-btn { margin-top: 15px; background: #334155; color: white; }
+  </style>
+</head>
+<body>
+
+  <div class="header-card">
+    <h2 id="userName">OpenBudget Bot</h2>
+    <p style="color: #aeb7c2; font-size: 13px; margin-top: 4px;">Asosiy Menyu</p>
+  </div>
+
+  <div class="btn-grid">
+    <!-- 🟢 Yashil (Tepada) -->
+    <button class="btn btn-green" onclick="showModal('🟢 Ovoz berish', 'Hozircha faol loyihalar yo\'q.')">
+      🟢 Ovoz berish
+    </button>
+
+    <!-- 🟦 Ko'k (O'rtada) -->
+    <div class="btn-row">
+      <button class="btn btn-blue" onclick="showBalance()">🟦 Balans</button>
+      <button class="btn btn-blue" onclick="showModal('🟦 Pul yechish', 'Minimal yechish summasi: 20,000 so\'m.')">🟦 Pul yechish</button>
+    </div>
+
+    <!-- 🟥 Qizil (Pastida) -->
+    <div class="btn-row">
+      <button class="btn btn-red" onclick="showModal('🟥 Referal', 'Do\'stlaringizni taklif qiling!')">🟥 Referal</button>
+      <button class="btn btn-red" onclick="showModal('🟥 To\'lovlar tarixi', 'Hali to\'lovlar yo\'q.')">🟥 To'lovlar tarixi</button>
+    </div>
+
+    <!-- ⚪️ Oq (Eng pastda) -->
+    <button class="btn btn-white" onclick="showModal('⚪️ Top 10', '1. Admin - 50,000 so\'m')">
+      ⚪️ Top 10
+    </button>
+  </div>
+
+  <div class="modal" id="infoModal">
+    <div class="modal-content">
+      <h3 id="modalTitle"></h3>
+      <p id="modalBody" style="margin-top: 10px; font-size: 14px; color: #d0d7de;"></p>
+      <button class="btn close-btn" onclick="closeModal()">Yopish</button>
+    </div>
+  </div>
+
+  <script>
+    const tg = window.Telegram.WebApp;
+    tg.expand();
+    const user = tg.initDataUnsafe?.user || { first_name: 'Foydalanuvchi', id: 123456, username: 'demo' };
+    document.getElementById('userName').innerText = "👤 " + user.first_name;
+
+    function showModal(title, body) {
+      document.getElementById('modalTitle').innerText = title;
+      document.getElementById('modalBody').innerHTML = body;
+      document.getElementById('infoModal').style.display = 'flex';
+    }
+
+    function closeModal() {
+      document.getElementById('infoModal').style.display = 'none';
+    }
+
+    function showBalance() {
+      const html = `Username: @${user.username || 'yoq'}<br>ID: <code>${user.id}</code><br><br><b>Balans:</b> 0 so'm<br><b>Referallar:</b> 0 ta<br><b>Qancha yechib olingan:</b> 0 so'm`;
+      showModal("🟦 Balans", html);
+    }
+  </script>
+</body>
+</html>
