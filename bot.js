@@ -19,7 +19,7 @@ bot.start((ctx) => {
     {
       parse_mode: 'HTML',
       ...Markup.inlineKeyboard([
-        [Markup.button.webApp('🟢 OpenApp Menyuni ochish 🟢', WEBAPP_URL)]
+        [Markup.button.webApp('🟢 OpenApp Menyuni ochish 🟢', https://openbuget1.onrender.com)]
       ])
     }
   );
